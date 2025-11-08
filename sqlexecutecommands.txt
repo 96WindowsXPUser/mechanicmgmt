@@ -1,0 +1,59 @@
+DROP DATABASE IF EXISTS mechanicdb;
+CREATE DATABASE mechanicdb;
+USE mechanicdb;
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    phone VARCHAR(20),
+    vehicle_number VARCHAR(20),
+    vehicle_model VARCHAR(100)
+);
+
+CREATE TABLE parts (
+    part_id INT AUTO_INCREMENT PRIMARY KEY,
+    part_name VARCHAR(100),
+    price DECIMAL(10,2),
+    stock INT
+);
+
+CREATE TABLE tools (
+    tool_id INT AUTO_INCREMENT PRIMARY KEY,
+    tool_name VARCHAR(100),
+    condition_status VARCHAR(50)
+);
+
+CREATE TABLE works (
+    work_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    description VARCHAR(255),
+    labour_charge DECIMAL(10,2),
+    status VARCHAR(50),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE work_parts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    work_id INT,
+    part_id INT,
+    quantity INT,
+    FOREIGN KEY (work_id) REFERENCES works(work_id),
+    FOREIGN KEY (part_id) REFERENCES parts(part_id)
+);
+
+CREATE TABLE bills (
+    bill_id INT AUTO_INCREMENT PRIMARY KEY,
+    work_id INT,
+    subtotal DECIMAL(10,2),
+    gst DECIMAL(10,2),
+    total DECIMAL(10,2),
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE nearby_shops (
+    shop_id INT AUTO_INCREMENT PRIMARY KEY,
+    shop_name VARCHAR(100),
+    address VARCHAR(255),
+    phone VARCHAR(20),
+    parts_available VARCHAR(255)
+);
